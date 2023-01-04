@@ -45,6 +45,13 @@
           "_id"
         ]
       }
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "multiline": true,
+        "minProperties": 6
+      }
     ]
   }
 }
