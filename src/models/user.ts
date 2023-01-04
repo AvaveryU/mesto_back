@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose';
 
 export interface IUser {
-  name: string; //имя пользователя
-  about: string; //информация о пользователе
-  avatar: string; //ссылка на аватарку
+  name: string; // имя пользователя
+  about: string; // информация о пользователе
+  avatar: string; // ссылка на аватарку
 }
 
 const userSchema = new Schema<IUser>({
@@ -16,7 +16,7 @@ const userSchema = new Schema<IUser>({
   about: {
     type: String,
     minlength: 2,
-    maxlength: 200,
+    maxlength: 30,
     required: true,
   },
   avatar: {

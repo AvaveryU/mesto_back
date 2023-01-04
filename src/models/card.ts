@@ -1,11 +1,11 @@
 import { model, Schema } from 'mongoose';
 
 export interface ICard {
-  name: string; //имя карточки
-  link: string; //ссылка на картинку
-  owner: Schema.Types.ObjectId; //ссылка на модель автора карточки
-  likes: [Schema.Types.ObjectId]; //список лайкнувших пост пользователей
-  createdAt: Date; //дата создания
+  name: string; // имя карточки
+  link: string; // ссылка на картинку
+  owner: Schema.Types.ObjectId; // ссылка на модель автора карточки
+  likes: [Schema.Types.ObjectId]; // список лайкнувших пост пользователей
+  createdAt: Date; // дата создания
 }
 
 const cardSchema = new Schema<ICard>({
