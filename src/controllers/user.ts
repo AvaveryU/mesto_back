@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { SUCCESS_REQUEST, ERROR_UNCORRECT_DATA, ERROR_NOT_FOUND, ERROR_SERVER } from '../utils/constants';
+import { SUCCESS_REQUEST, ERROR_UNCORRECT_DATA, ERROR_NOT_FOUND, ERROR_SERVER, SECRET_KEY } from '../utils/constants';
 import User from '../models/user';
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
   User.findUserByCredentials(email, password)
     .then((user) => {
       // аутентификация успешна
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' }); // токен будет просрочен через 7 дней после создания
+      const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' }); // токен будет просрочен через 7 дней после создания
       res.send({ token });
     })
     .catch(next);
@@ -30,7 +30,7 @@ export const getUsers = (_req: Request, res: Response, next: NextFunction) => {
   User.find({})
     .then((users) => res.send(users))
     .catch(() => {
-      next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка при получении данных о пользователях' }));
+      next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
     });
 };
 
@@ -47,7 +47,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
           .catch((err) => {
             if (err.name === 'ValidationError') {
               next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Неверный формат данных при создании пользователя' }));
-            } else next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка при создании пользователя' }));
+            } else next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
           });
       }
     });
@@ -64,7 +64,7 @@ export const getUser = (req: Request, res: Response, next: NextFunction) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Переданы невалидные данные для получения данных о пользователе' }));
-      } else next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка при поиске пользователя по указанному id' }));
+      } else next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
     });
 };
 
@@ -80,7 +80,7 @@ export const refreshUser = async (req: Request, res: Response, next: NextFunctio
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Переданы невалидные данные при обновлении данных пользователя' }));
-      } else next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере при обновлении данных о пользователе' }));
+      } else next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
     });
 };
 
@@ -96,6 +96,6 @@ export const refreshAvatar = (req: Request, res: Response, next: NextFunction) =
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Переданы невалидные данные при обновлении аватара пользователя' }));
-      } else next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере при обновлении аватара' }));
+      } else next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
     });
 };
