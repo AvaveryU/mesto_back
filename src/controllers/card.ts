@@ -5,7 +5,7 @@ import Card from '../models/card';
 export const getCards = (_req: Request, res: Response, next: NextFunction) => {
   Card.find({})
     .then((cards) => res.status(SUCCESS_REQUEST).send({ cards }))
-    .catch(() => next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка при получении данных о карточках' })));
+    .catch(() => next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' })));
 };
 
 export const createCard = (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +16,7 @@ export const createCard = (req: Request, res: Response, next: NextFunction) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Произошла ошибка при создании карточки' }));
-      } else next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере при создании карточки' }));
+      } else next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
     });
 };
 
@@ -34,7 +34,7 @@ export const removeCard = (req: Request, res: Response, next: NextFunction) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Передан невалидный id карточки' }));
-      } else next(res.status(ERROR_SERVER).send({ message: 'Произошла ошибка при поиске карточки' }));
+      } else next(res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
     });
 };
 
@@ -54,7 +54,7 @@ export const addLike = async (req: Request, res: Response, next: NextFunction) =
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(ERROR_UNCORRECT_DATA).send({ message: 'Переданы невалидные данные карточки' });
-      } else next(res.status(ERROR_SERVER).send('Произошла ошибка на сервере при добавлении лайка'));
+      } else next(res.status(ERROR_SERVER).send('На сервере произошла ошибка'));
     });
 };
 
@@ -74,6 +74,6 @@ export const removeLike = (req: Request, res: Response, next: NextFunction) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(res.status(ERROR_UNCORRECT_DATA).send({ message: 'Переданы невалидные данные карточки' }));
-      } else next(res.status(ERROR_SERVER).send('Произошла ошибка на сервере при удалении лайка'));
+      } else next(res.status(ERROR_SERVER).send('На сервере произошла ошибка'));
     });
 };
