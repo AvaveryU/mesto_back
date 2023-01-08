@@ -1,12 +1,13 @@
 import { Router } from 'express';
-import { getUsers, createUser, getUser, refreshUser, refreshAvatar } from '../controllers/user';
+import { validationRefreshAvavtar, validationRefreshUserInfo, validationUserId } from '../middlewares/celebrateErrorsUser';
+import { getUsers, getUser, refreshUser, refreshAvatar, getCurrentUser } from '../controllers/user';
 
 const router = Router();
 
 router.get('/', getUsers);
-router.post('/', createUser);
-router.get('/:userId', getUser);
-router.patch('/me', refreshUser);
-router.patch('/me/avatar', refreshAvatar);
+router.get('/me', getCurrentUser);
+router.get('/:userId', validationUserId, getUser);
+router.patch('/me', validationRefreshUserInfo, refreshUser);
+router.patch('/me/avatar', validationRefreshAvavtar, refreshAvatar);
 
 export default router;
